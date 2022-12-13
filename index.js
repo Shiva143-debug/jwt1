@@ -31,32 +31,17 @@ initializeDBAndServer();
 
 // Get Books API
 app.get("/books/", async (request, response) => {
-  let jwtToken;
-  const authHeader = request.headers["authorization"];
-  if (authHeader !== undefined) {
-    jwtToken = authHeader.split(" ")[1];
-  }
-  if (jwtToken === undefined) {
-    response.status(401);
-    response.send("Invalid jwt Token");
-  } else {
-    jwt.verify(jwtToken, "asdfghjkl", async (error, user) => {
-      if (error) {
-        response.status(401);
-        response.send("Invalid jwt Token");
-      } else {
-        const getBooksQuery = `
-                SELECT
-                    *
-                FROM
-                    book
-                ORDER BY
-                    book_id;`;
-        const booksArray = await db.all(getBooksQuery);
-        response.send(booksArray);
-      }
-    });
-  }
+  
+      const getBooksQuery = `
+              SELECT
+                  *
+              FROM
+                  book
+              ORDER BY
+                  book_id;`;
+      const booksArray = await db.all(getBooksQuery);
+      response.send(booksArray);
+    
 });
 
 // User Register API
